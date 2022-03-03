@@ -3,9 +3,11 @@
  */
 export class Publication {
   title;
+  author;
 
-  constructor(_title) {
+  constructor(_title, _author) {
     this.title = _title;
+    this.author = _author;
   }
 }
 

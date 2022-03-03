@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export class PublicationView extends Component {
   render() {
@@ -6,18 +7,19 @@ export class PublicationView extends Component {
       <div className="col-4">
         <div className="card" style={{ width: "18rem" }}>
           <div className="card-body">
-            <h5 className="card-title"> Sample publication</h5>
+            <h5 className="card-title">{this.props.pub.title}</h5>
             <p className="card-text">
-              Lorem ipsum dolor, sit, amet consectetur adipisicing elit. Iste
-              expedita eos id pariatur nihil ex nemo commodi, sint aperiam hic
-              dolorum distinctio laboriosam dolore tempora reiciendis
-              consequatur delectus provident illo.
+              {this.props.pub.author}
             </p>
           </div>
         </div>
       </div>
     );
   }
+}
+
+PublicationView.propTypes ={
+  pub : PropTypes.object.isRequired
 }
 
 export default PublicationView;
