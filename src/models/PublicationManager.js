@@ -22,10 +22,32 @@ class PublicationManager {
     return allPubs;
   }
 
-  addPublication(_title, _author) {}
+  addPublication(pubObj, doneCBK) {
+    console.log("creating publication", pubObj);
+
+    let db = new minimongo.IndexedDb(
+      {
+        namespace: "pubManagerDB",
+      },
+      function () {
+        console.log("DB Created");
+
+        db.addCollection("publications", function () {
+          db.publications.upsert(
+            pubObj,
+            function (res) {
+              console.log("Publication Inserted", res);
+
+              doneCBK(res);
+            }
+          );
+        });
+      }
+    );
+
+  }
 
   getPublications(doneCBK) {
-
     let res;
 
     let db = new minimongo.IndexedDb(

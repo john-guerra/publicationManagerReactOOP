@@ -4,6 +4,7 @@ import "./App.css";
 
 import CreatePublicationForm from "../components/CreatePublicationForm.js";
 import PublicationsGallery from "../components/PublicationsGallery.js";
+import ClickableTable from "../components/ClickableTable.js";
 
 import PublicationManager from "../models/PublicationManager.js";
 
@@ -18,28 +19,34 @@ class App extends Component {
       publications: [],
     };
     this.onCreatePublication = this.onCreatePublication.bind(this);
+
     console.log("constructor");
   }
 
   componentDidMount() {
     console.log("CDM getting publications");
+    this.getPublicationsAndRender();
+    console.log("done getting publications?");
+  }
+
+  /**
+   * Queries the PM for the current list of publications, then changes the state to the component re renders
+   */
+  getPublicationsAndRender() {
     this.pm.getPublications((publications) => {
       console.log("got publications");
       this.setState({
         publications,
       });
     });
-    console.log("done getting publications?");
   }
 
   onCreatePublication(title, author) {
-    this.pm.addPublication(title, author);
-    // this.setState({
-    //   publications: [
-    //     ...this.state.publications,
-    //     new Publication(title, author),
-    //   ],
-    // });
+    this.pm.addPublication({ title, author }, (res) => {
+      console.log("The pub was inserted", res);
+
+      this.getPublicationsAndRender();
+    });
   }
 
   render() {
@@ -51,6 +58,7 @@ class App extends Component {
             <h1>Publication Manager</h1>
             <div className="mb-5">The place to control your publications</div>
             <hr />
+
             <CreatePublicationForm
               onCreatePublication={this.onCreatePublication}
             ></CreatePublicationForm>
@@ -58,6 +66,8 @@ class App extends Component {
             <PublicationsGallery
               publications={this.state.publications}
             ></PublicationsGallery>
+
+            <ClickableTable></ClickableTable>
           </BasePage>
         </div>
       </div>
